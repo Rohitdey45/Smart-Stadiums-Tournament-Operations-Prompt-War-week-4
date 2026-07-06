@@ -4,7 +4,7 @@
 /** Fallback HTTP port when Cloud Run does not inject one. */
 export const DEFAULT_PORT = 8080;
 
-/** Reported by /healthz so a deploy can be matched to a commit. */
+/** Reported by GET /api/health so a deploy can be matched to a commit. */
 export const APP_VERSION = '1.0.0';
 
 /** Maximum accepted JSON request body. */

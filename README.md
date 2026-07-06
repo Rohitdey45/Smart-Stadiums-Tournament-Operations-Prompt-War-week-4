@@ -131,7 +131,7 @@ Root scripts: `build` · `lint` · `typecheck` · `test` · `test:coverage` ·
 
 ## Testing
 
-Run `npm run test:coverage`. Coverage thresholds (80% lines, functions,
+Run `npm run test:coverage`. Coverage thresholds (90% lines, functions,
 branches, statements) are enforced in each workspace's Vitest config, so CI
 fails if coverage regresses.
 

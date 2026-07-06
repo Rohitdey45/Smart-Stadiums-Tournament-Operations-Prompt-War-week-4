@@ -63,7 +63,11 @@ export function buildApp(): express.Express {
         directives: {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'"],
-          styleSrc: ["'self'", "'unsafe-inline'"],
+          // Stylesheets must be same-origin; only inline style *attributes*
+          // (React's data-driven `style` prop) are allowed, not inline
+          // <style> blocks — a tighter grant than a blanket 'unsafe-inline'.
+          styleSrc: ["'self'"],
+          styleSrcAttr: ["'unsafe-inline'"],
           imgSrc: ["'self'", 'data:'],
           connectSrc: ["'self'"],
           objectSrc: ["'none'"],
