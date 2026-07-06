@@ -6,7 +6,7 @@ grounded navigation, accessibility and transport help; organizers get live
 crowd intelligence and AI-generated operational briefings for real-time
 decisions.
 
-**Live demo:** _deployed on Google Cloud Run — URL added after deployment_
+**Live demo:** <https://stadiumiq-851755555005.asia-south1.run.app>
 **Repository:** <https://github.com/Auenchanters/Virtual-Prompt-war-Week-4>
 **Region:** asia-south1 · **GCP project:** week-4-501612
 
@@ -176,7 +176,9 @@ See [SECURITY.md](SECURITY.md) for the full threat model.
   Gemini call has a timeout and one retry.
 - In-memory TTL caches for repeated assistant questions and briefings.
 - `--min-instances=1` keeps a warm instance for a sub-2s first response.
-- _Lighthouse Performance score added after deployment._
+- **Lighthouse Performance 100 / Best Practices 100** on the live URL
+  (measured 2026-07-07). Live API timings: snapshot ~0.4 s, assistant ~1.8 s,
+  cached briefing ~0.3 s.
 
 ---
 
@@ -193,7 +195,10 @@ Built to **WCAG 2.1 AA** and verified with axe and Lighthouse.
 - Status is never colour-only (text tags accompany every colour); contrast
   meets 4.5:1 for text; `prefers-reduced-motion` is honoured.
 - `jsx-a11y` rules enforced in lint.
-- _Lighthouse Accessibility and axe results added after deployment._
+- **Lighthouse Accessibility 100** on every route (home, `/assistant`,
+  `/operations`) on the live URL, measured 2026-07-07. Lighthouse's
+  accessibility audits run the axe-core ruleset; status colours were tuned to
+  meet the 4.5:1 contrast bar.
 
 ---
 

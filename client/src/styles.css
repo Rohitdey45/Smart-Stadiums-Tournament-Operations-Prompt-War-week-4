@@ -11,9 +11,10 @@
   --color-accent: #4c8dff;
   --color-accent-strong: #1e50c8;
   --color-on-accent: #ffffff;
-  --color-comfortable: #2f9e6b;
+  /* Status colours meet WCAG AA (>= 4.5:1) with their on-colour text. */
+  --color-comfortable: #157a48;
   --color-busy: #c98a1a;
-  --color-critical: #d64550;
+  --color-critical: #b71c28;
   --color-focus: #ffd166;
 
   --radius: 10px;
@@ -399,7 +400,7 @@ a {
 
 .status-message--error {
   border-color: var(--color-critical);
-  background: rgba(214, 69, 80, 0.12);
+  background: rgba(183, 28, 40, 0.14);
 }
 
 .visually-hidden {
