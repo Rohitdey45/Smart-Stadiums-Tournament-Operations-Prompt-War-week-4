@@ -3,7 +3,11 @@
 import { GoogleGenAI } from '@google/genai';
 
 import { env } from '../config/env.js';
-import { GEMINI_MAX_OUTPUT_TOKENS, GEMINI_TIMEOUT_MS } from '../config/constants.js';
+import {
+  GEMINI_MAX_OUTPUT_TOKENS,
+  GEMINI_THINKING_BUDGET,
+  GEMINI_TIMEOUT_MS,
+} from '../config/constants.js';
 import { AppError } from './app-error.js';
 import { logger } from './logger.js';
 
@@ -20,6 +24,7 @@ async function requestText(prompt: string): Promise<string | undefined> {
     contents: prompt,
     config: {
       maxOutputTokens: GEMINI_MAX_OUTPUT_TOKENS,
+      thinkingConfig: { thinkingBudget: GEMINI_THINKING_BUDGET },
       abortSignal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
     },
   });

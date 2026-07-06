@@ -93,7 +93,7 @@ flowchart LR
 
 | Method + path                           | Purpose                                |
 | --------------------------------------- | -------------------------------------- |
-| `GET /healthz`                          | Liveness + version                     |
+| `GET /api/health`                       | Liveness + version                     |
 | `GET /api/stadium/facilities?category=` | Venue facilities for quick actions     |
 | `POST /api/assistant/ask`               | Grounded, multilingual answer (Gemini) |
 | `GET /api/operations/snapshot`          | Live zones, incidents, sustainability  |

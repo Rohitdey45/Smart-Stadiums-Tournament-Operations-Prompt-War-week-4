@@ -45,7 +45,7 @@ function mountClient(app: express.Express): void {
     }),
   );
   // SPA fallback: every non-API GET renders the client shell.
-  app.get(/^\/(?!api\/|healthz).*/, (_req, res) => {
+  app.get(/^\/(?!api\/).*/, (_req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.sendFile(path.join(CLIENT_DIST_PATH, 'index.html'));
   });
@@ -76,7 +76,10 @@ export function buildApp(): express.Express {
   app.use(compression());
   app.use(express.json({ limit: JSON_BODY_LIMIT }));
 
-  app.get('/healthz', (_req, res) => {
+  // Liveness endpoint. Lives under /api because the Google Front End reserves
+  // the bare /healthz path and answers it at the edge before Cloud Run. Placed
+  // ahead of the rate limiter so health checks are never throttled.
+  app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', version: APP_VERSION });
   });
 

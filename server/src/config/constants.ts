@@ -28,6 +28,13 @@ export const GEMINI_TIMEOUT_MS = 30_000;
 /** Output budget for Gemini responses (answers and briefings are short). */
 export const GEMINI_MAX_OUTPUT_TOKENS = 1024;
 
+/**
+ * Thinking-token budget. Zero disables Gemini 2.5's internal reasoning, which
+ * these well-structured prompts do not need — it removes latency and prevents
+ * thinking from consuming the whole output budget and returning empty text.
+ */
+export const GEMINI_THINKING_BUDGET = 0;
+
 /** Interval between simulated crowd-telemetry updates written to Firestore. */
 export const TELEMETRY_TICK_MS = 60_000;
 
