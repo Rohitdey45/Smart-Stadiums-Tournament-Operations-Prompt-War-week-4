@@ -7,7 +7,7 @@ crowd intelligence and AI-generated operational briefings for real-time
 decisions.
 
 **Live demo:** _deployed on Google Cloud Run — URL added after deployment_
-**Repository:** <https://github.com/Auenchanters/Virtual-Prompt-was-Week-4>
+**Repository:** <https://github.com/Auenchanters/Virtual-Prompt-war-Week-4>
 **Region:** asia-south1 · **GCP project:** week-4-501612
 
 ---
