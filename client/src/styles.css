@@ -277,6 +277,33 @@ a {
   gap: var(--space-1);
 }
 
+.density-card__title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.density-card__count {
+  margin: 0.25rem 0 0;
+}
+
+.form-actions {
+  margin-top: var(--space-2);
+}
+
+.incident__summary {
+  margin: 0;
+}
+
+.incident__meta {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+}
+
+.briefing__timestamp {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
 .density-bar {
   height: 0.6rem;
   border-radius: 999px;

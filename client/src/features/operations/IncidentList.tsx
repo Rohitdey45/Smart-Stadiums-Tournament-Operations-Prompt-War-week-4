@@ -18,8 +18,8 @@ export function IncidentList({ incidents }: IncidentListProps): React.JSX.Elemen
         <li key={incident.id} className="incident">
           <span className={`severity-dot severity-dot--${incident.severity}`} aria-hidden="true" />
           <div>
-            <p style={{ margin: 0 }}>{incident.summary}</p>
-            <p className="muted" style={{ margin: '0.25rem 0 0', fontSize: '0.85rem' }}>
+            <p className="incident__summary">{incident.summary}</p>
+            <p className="muted incident__meta">
               {incident.severity} severity · {incident.category} · {incident.zoneId} ·{' '}
               {incident.status}
             </p>

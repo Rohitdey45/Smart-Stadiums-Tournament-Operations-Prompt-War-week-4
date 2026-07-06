@@ -54,7 +54,7 @@ export function AssistantPage(): React.JSX.Element {
             }}
             disabled={isLoading}
           />
-          <p style={{ marginTop: '1rem' }}>
+          <p className="form-actions">
             <button type="submit" className="button" disabled={isLoading || draft.trim() === ''}>
               {isLoading ? 'Asking…' : 'Ask StadiumIQ'}
             </button>

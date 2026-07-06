@@ -19,12 +19,12 @@ export function DensityBoard({ zones }: DensityBoardProps): React.JSX.Element {
       {zones.map((zone) => (
         <li key={zone.id} className="density-card">
           <div className="density-card__head">
-            <h3 style={{ margin: 0, fontSize: '1rem' }}>{zone.name}</h3>
+            <h3 className="density-card__title">{zone.name}</h3>
             <span className={`status-tag status-tag--${zone.status}`}>
               {STATUS_LABEL[zone.status]}
             </span>
           </div>
-          <p className="muted" style={{ margin: '0.25rem 0 0' }}>
+          <p className="muted density-card__count">
             {zone.occupancy.toLocaleString()} of {zone.capacity.toLocaleString()} ({zone.densityPct}
             %)
           </p>

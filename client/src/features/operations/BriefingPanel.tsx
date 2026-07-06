@@ -35,7 +35,7 @@ export function BriefingPanel({
 
       {briefing !== null && !isLoading ? (
         <div aria-live="polite">
-          <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
+          <p className="muted briefing__timestamp">
             Generated {new Date(briefing.generatedAt).toLocaleTimeString()}
           </p>
           <p className="briefing">{briefing.briefing}</p>

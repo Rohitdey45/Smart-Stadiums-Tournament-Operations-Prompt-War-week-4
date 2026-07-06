@@ -162,7 +162,7 @@ See [SECURITY.md](SECURITY.md) for the full threat model.
 - **Error hygiene**: one central handler returns sanitized `{ code, message }`
   bodies; stack traces and internal detail are logged server-side only.
 - **Supply chain**: `npm audit --omit=dev --audit-level=high` → 0
-  vulnerabilities; lockfile committed.
+  vulnerabilities, enforced as a CI step on every push; lockfile committed.
 
 ---
 
@@ -177,8 +177,9 @@ See [SECURITY.md](SECURITY.md) for the full threat model.
 - In-memory TTL caches for repeated assistant questions and briefings.
 - `--min-instances=1` keeps a warm instance for a sub-2s first response.
 - **Lighthouse Performance 100 / Best Practices 100** on the live URL
-  (measured 2026-07-07). Live API timings: snapshot ~0.4 s, assistant ~1.8 s,
-  cached briefing ~0.3 s.
+  (Lighthouse 12.8.2; scores and reproduction command in
+  [docs/lighthouse-results.md](docs/lighthouse-results.md)). Live API timings:
+  snapshot ~0.4 s, assistant ~1.8 s, cached briefing ~0.3 s.
 
 ---
 
@@ -196,7 +197,8 @@ Built to **WCAG 2.1 AA** and verified with axe and Lighthouse.
   meets 4.5:1 for text; `prefers-reduced-motion` is honoured.
 - `jsx-a11y` rules enforced in lint.
 - **Lighthouse Accessibility 100** on every route (home, `/assistant`,
-  `/operations`) on the live URL, measured 2026-07-07. Lighthouse's
+  `/operations`) with zero audit failures — see
+  [docs/lighthouse-results.md](docs/lighthouse-results.md). Lighthouse's
   accessibility audits run the axe-core ruleset; status colours were tuned to
   meet the 4.5:1 contrast bar.
 
