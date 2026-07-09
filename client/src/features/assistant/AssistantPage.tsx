@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { ErrorMessage, LoadingState } from '../../components/StatusMessage.js';
+import { MAX_QUESTION_LENGTH } from '../../lib/constants.js';
 import { ChatMessageList } from './ChatMessageList.js';
 import { LanguageSelector } from './LanguageSelector.js';
 import { QuickActions } from './QuickActions.js';
@@ -46,8 +47,9 @@ export function AssistantPage(): React.JSX.Element {
             id="assistant-question"
             className="text-input"
             type="text"
+            dir="auto"
             value={draft}
-            maxLength={500}
+            maxLength={MAX_QUESTION_LENGTH}
             placeholder="e.g. Where is the accessible entrance?"
             onChange={(event) => {
               setDraft(event.target.value);

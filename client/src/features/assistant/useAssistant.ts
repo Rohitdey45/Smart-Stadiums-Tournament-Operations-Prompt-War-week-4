@@ -2,7 +2,7 @@
 // component declarative: it renders whatever this hook exposes.
 import { useCallback, useState } from 'react';
 
-import { ApiError, askAssistant } from '../../lib/api.js';
+import { askAssistant, toErrorMessage } from '../../lib/api.js';
 import type { SupportedLanguage } from '../../lib/api-types.js';
 
 /** A single turn in the assistant conversation. */
@@ -10,6 +10,8 @@ export interface ChatTurn {
   id: string;
   role: 'fan' | 'assistant';
   text: string;
+  /** BCP 47 tag of the turn's content (assistant turns), for WCAG 3.1.2. */
+  language?: SupportedLanguage;
 }
 
 interface UseAssistantResult {
@@ -43,13 +45,14 @@ export function useAssistant(): UseAssistantResult {
       setTurns((prev) => [...prev, { id: makeId(), role: 'fan', text: trimmed }]);
       try {
         const result = await askAssistant(trimmed, language);
-        setTurns((prev) => [...prev, { id: makeId(), role: 'assistant', text: result.answer }]);
+        setTurns((prev) => [
+          ...prev,
+          { id: makeId(), role: 'assistant', text: result.answer, language: result.language },
+        ]);
       } catch (caught) {
-        const message =
-          caught instanceof ApiError
-            ? caught.message
-            : 'The assistant is unavailable right now. Please try again.';
-        setError(message);
+        setError(
+          toErrorMessage(caught, 'The assistant is unavailable right now. Please try again.'),
+        );
       } finally {
         setIsLoading(false);
       }

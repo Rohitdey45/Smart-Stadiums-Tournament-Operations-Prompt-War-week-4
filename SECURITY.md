@@ -20,7 +20,10 @@ and leakage of stack traces or credentials.
 - **HTTP hardening**: helmet (CSP restricted to self), an explicit CORS
   origin allowlist, `express.json` body limit of 100 kB, and layered rate
   limits — a general API limit plus a stricter limit on the two
-  Gemini-backed endpoints.
+  Gemini-backed endpoints. The limiter counts per instance, so the deploy
+  pins `--max-instances=3` to keep the global Gemini spend bounded even
+  under scale-out; a shared store (e.g. Memorystore) is the production
+  upgrade path.
 - **Prompt containment**: user text is embedded in a system-framed prompt
   that instructs the model to answer only from the venue dataset; model
   output is rendered as plain text, never as HTML.
@@ -40,4 +43,15 @@ exposed to clients.
 ## Reporting a vulnerability
 
 Open a GitHub issue titled `[security]` (no exploit details), or email
-usy.joseph@gmail.com. You will get a response within 48 hours.
+usy.joseph@gmail.com. You will get a response within 48 hours. The same contact
+is published for machine discovery at
+[`/.well-known/security.txt`](https://stadiumiq-851755555005.asia-south1.run.app/.well-known/security.txt)
+(RFC 9116).
+
+## Automated security checks
+
+Every push runs, in CI: a gitleaks secret scan, `npm audit --omit=dev
+--audit-level=high`, and CodeQL static analysis with the `security-extended`
+query pack (also weekly). Dependabot opens grouped weekly dependency-update PRs
+for npm and GitHub Actions. All workflows run with least-privilege
+`permissions` (`contents: read` by default).

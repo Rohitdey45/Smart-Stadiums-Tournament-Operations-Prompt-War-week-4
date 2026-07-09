@@ -56,4 +56,10 @@ describe('ensureSeeded / getSnapshot / advanceTelemetry', () => {
       expect(zone.densityPct).toBeLessThanOrEqual(98);
     }
   });
+
+  it('advanceTelemetry is a no-op before the database has been seeded', async () => {
+    // Must not write partial sustainability state when there are no zones.
+    await advanceTelemetry(() => 1);
+    expect(fakeDb.read('sustainability', 'current')).toBeUndefined();
+  });
 });

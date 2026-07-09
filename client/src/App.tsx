@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { AppLayout } from './components/AppLayout.js';
 import { ErrorBoundary } from './components/ErrorBoundary.js';
+import { NotFoundPage } from './components/NotFoundPage.js';
 import { LoadingState } from './components/StatusMessage.js';
 import { HomePage } from './features/home/HomePage.js';
 
@@ -42,7 +43,7 @@ export function App(): React.JSX.Element {
               </Suspense>
             }
           />
-          <Route path="*" element={<HomePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </ErrorBoundary>

@@ -27,7 +27,11 @@ export function ChatMessageList({ turns }: ChatMessageListProps): React.JSX.Elem
       {turns.map((turn) => (
         <li key={turn.id} className={`chat-message chat-message--${turn.role}`}>
           <p className="chat-message__role">{ROLE_LABEL[turn.role]}</p>
-          <p className="chat-message__body">{turn.text}</p>
+          {/* dir="auto" keeps right-to-left content (Arabic) reading correctly;
+              lang tells screen readers which phonetics to use (WCAG 3.1.2). */}
+          <p className="chat-message__body" dir="auto" lang={turn.language}>
+            {turn.text}
+          </p>
         </li>
       ))}
     </ul>

@@ -21,6 +21,14 @@ export class ApiError extends Error {
 
 const GENERIC_ERROR = 'The service is temporarily unavailable. Please try again.';
 
+/**
+ * Extracts a user-safe message from a caught error: the sanitized message of
+ * a known {@link ApiError}, otherwise the caller's fallback.
+ */
+export function toErrorMessage(caught: unknown, fallback: string): string {
+  return caught instanceof ApiError ? caught.message : fallback;
+}
+
 function isErrorBody(value: unknown): value is ApiErrorBody {
   if (typeof value !== 'object' || value === null || !('error' in value)) {
     return false;

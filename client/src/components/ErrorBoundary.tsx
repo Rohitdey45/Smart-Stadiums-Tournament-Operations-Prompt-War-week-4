@@ -14,14 +14,17 @@ interface ErrorBoundaryState {
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   override state: ErrorBoundaryState = { hasError: false };
 
+  /** Flips into the error state so the next render shows the fallback. */
   static getDerivedStateFromError(): ErrorBoundaryState {
     return { hasError: true };
   }
 
+  /** Logs the error and component stack for diagnostics. */
   override componentDidCatch(error: Error, info: ErrorInfo): void {
     console.error('Unhandled UI error', error, info.componentStack);
   }
 
+  /** Renders the accessible fallback when errored, else the subtree. */
   override render(): ReactNode {
     if (this.state.hasError) {
       return (

@@ -1,7 +1,7 @@
 // Language selector for the assistant. A labelled native <select> so it is
 // keyboard-complete and screen-reader friendly with no custom widget code.
 import type { SupportedLanguage } from '../../lib/api-types.js';
-import { LANGUAGE_OPTIONS } from './assistant-content.js';
+import { LANGUAGE_OPTIONS, parseLanguage } from './assistant-content.js';
 
 interface LanguageSelectorProps {
   value: SupportedLanguage;
@@ -26,7 +26,7 @@ export function LanguageSelector({
         value={value}
         disabled={disabled}
         onChange={(event) => {
-          onChange(event.target.value as SupportedLanguage);
+          onChange(parseLanguage(event.target.value));
         }}
       >
         {LANGUAGE_OPTIONS.map((option) => (

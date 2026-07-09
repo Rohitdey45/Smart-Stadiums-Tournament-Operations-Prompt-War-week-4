@@ -3,7 +3,7 @@
 // on demand.
 import { useCallback, useEffect, useState } from 'react';
 
-import { ApiError, fetchSnapshot, requestBriefing } from '../../lib/api.js';
+import { fetchSnapshot, requestBriefing, toErrorMessage } from '../../lib/api.js';
 import type { OpsBriefing, OpsSnapshot } from '../../lib/api-types.js';
 
 /** How often the dashboard re-fetches the live snapshot, in milliseconds. */
@@ -16,10 +16,6 @@ interface UseOperationsResult {
   isBriefingLoading: boolean;
   briefingError: string | null;
   generateBriefing: () => Promise<void>;
-}
-
-function toMessage(caught: unknown, fallback: string): string {
-  return caught instanceof ApiError ? caught.message : fallback;
 }
 
 /** Manages live snapshot polling and briefing generation for the dashboard. */
@@ -41,7 +37,7 @@ export function useOperations(): UseOperationsResult {
         }
       } catch (caught) {
         if (active) {
-          setSnapshotError(toMessage(caught, 'Unable to load live operations data.'));
+          setSnapshotError(toErrorMessage(caught, 'Unable to load live operations data.'));
         }
       }
     };
@@ -62,7 +58,7 @@ export function useOperations(): UseOperationsResult {
     try {
       setBriefing(await requestBriefing());
     } catch (caught) {
-      setBriefingError(toMessage(caught, 'Unable to generate a briefing right now.'));
+      setBriefingError(toErrorMessage(caught, 'Unable to generate a briefing right now.'));
     } finally {
       setIsBriefingLoading(false);
     }

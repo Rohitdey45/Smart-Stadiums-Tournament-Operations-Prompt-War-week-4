@@ -32,4 +32,37 @@ describe('useOperations', () => {
 
     expect(result.current.briefingError).toBe('Unable to generate a briefing right now.');
   });
+
+  it('ignores a second briefing request while one is already in flight', async () => {
+    vi.spyOn(api, 'fetchSnapshot').mockResolvedValue(SNAPSHOT);
+    let resolveBriefing!: (value: { briefing: string; generatedAt: string }) => void;
+    const briefingSpy = vi.spyOn(api, 'requestBriefing').mockReturnValue(
+      new Promise((resolve) => {
+        resolveBriefing = resolve;
+      }),
+    );
+
+    const { result } = renderHook(() => useOperations());
+    await waitFor(() => {
+      expect(result.current.snapshot).not.toBeNull();
+    });
+
+    act(() => {
+      void result.current.generateBriefing();
+    });
+    expect(result.current.isBriefingLoading).toBe(true);
+
+    // A double-click must not fire a second (billable) Gemini request.
+    await act(async () => {
+      await result.current.generateBriefing();
+    });
+    expect(briefingSpy).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      resolveBriefing({ briefing: 'TOP RISKS', generatedAt: 'now' });
+      await Promise.resolve();
+    });
+    expect(result.current.briefing?.briefing).toBe('TOP RISKS');
+    expect(result.current.isBriefingLoading).toBe(false);
+  });
 });

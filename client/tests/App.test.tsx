@@ -47,10 +47,27 @@ describe('App routing', () => {
     ).toBeInTheDocument();
   });
 
-  it('falls back to the home page for an unknown route', () => {
-    renderAt('/nowhere');
+  it('lazy-loads the operations route on navigation', async () => {
+    vi.spyOn(api, 'fetchSnapshot').mockResolvedValue({
+      zones: [],
+      incidents: [],
+      sustainability: { wasteDivertedPct: 60, energyKwh: 1, waterRefillCount: 2, co2SavedKg: 3 },
+      generatedAt: '2026-07-09T17:00:00.000Z',
+    });
+    const user = userEvent.setup();
+    renderAt('/');
+
+    await user.click(screen.getByRole('link', { name: 'Operations' }));
+
     expect(
-      screen.getByRole('heading', { name: /Smart Stadiums & Tournament Operations/i }),
+      await screen.findByRole('heading', { name: 'Operations Command Center' }),
     ).toBeInTheDocument();
+  });
+
+  it('shows an accessible not-found page for an unknown route', () => {
+    renderAt('/nowhere');
+    expect(screen.getByRole('heading', { name: 'Page not found' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'home page' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Operations Command Center' })).toBeInTheDocument();
   });
 });

@@ -1,9 +1,20 @@
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import globals from 'globals';
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', '**/coverage/**', '**/node_modules/**'] },
+  {
+    ignores: [
+      '**/dist/**',
+      '**/coverage/**',
+      '**/node_modules/**',
+      '**/playwright-report/**',
+      '**/test-results/**',
+      '**/reports/**',
+      '**/.stryker-tmp/**',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
@@ -44,5 +55,19 @@ export default tseslint.config(
   {
     files: ['**/*.js'],
     extends: [tseslint.configs.disableTypeChecked],
+  },
+  {
+    // E2E specs and tool configs live outside the workspace tsconfigs; lint them
+    // for style without type-aware rules (same treatment as plain JS files).
+    files: ['e2e/**/*.ts', 'playwright.config.ts', 'playwright.live.config.ts'],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
+  {
+    // Node tooling scripts: outside the workspaces and legitimately use console
+    // for operator output.
+    files: ['scripts/**/*.{js,mjs,cjs}'],
+    extends: [tseslint.configs.disableTypeChecked],
+    languageOptions: { globals: globals.node },
+    rules: { 'no-console': 'off' },
   },
 );

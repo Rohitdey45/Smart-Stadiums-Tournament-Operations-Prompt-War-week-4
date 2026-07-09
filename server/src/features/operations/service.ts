@@ -5,6 +5,7 @@
 // lives in crowd.ts.
 import { FieldValue } from '@google-cloud/firestore';
 
+import { TELEMETRY_REFILL_MAX_GROWTH } from '../../config/constants.js';
 import { COLLECTIONS, getFirestore, SUSTAINABILITY_DOC_ID } from '../../lib/firestore.js';
 import { logger } from '../../lib/logger.js';
 import { nextOccupancy, toZoneOccupancy } from './crowd.js';
@@ -71,7 +72,7 @@ export async function advanceTelemetry(random: () => number = Math.random): Prom
     const zone = doc.data() as ZoneRecord;
     batch.update(doc.ref, { occupancy: nextOccupancy(zone, random) });
   }
-  const refillGrowth = Math.round(random() * 40);
+  const refillGrowth = Math.round(random() * TELEMETRY_REFILL_MAX_GROWTH);
   batch.set(
     db.collection(COLLECTIONS.sustainability).doc(SUSTAINABILITY_DOC_ID),
     { waterRefillCount: FieldValue.increment(refillGrowth) },

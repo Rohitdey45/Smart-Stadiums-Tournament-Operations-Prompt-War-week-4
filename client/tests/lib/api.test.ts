@@ -1,6 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { ApiError, askAssistant, fetchSnapshot, requestBriefing } from '../../src/lib/api.js';
+import {
+  ApiError,
+  askAssistant,
+  fetchSnapshot,
+  requestBriefing,
+  toErrorMessage,
+} from '../../src/lib/api.js';
 
 function mockFetch(response: Partial<Response> & { json: () => Promise<unknown> }): void {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response));
@@ -47,6 +53,28 @@ describe('askAssistant', () => {
   });
 });
 
+describe('error body handling', () => {
+  it('maps a non-JSON error response to a generic ApiError', async () => {
+    mockFetch({ ok: false, json: () => Promise.reject(new SyntaxError('not json')) });
+    const error = await askAssistant('x', 'en').catch((caught: unknown) => caught);
+    expect(error).toBeInstanceOf(ApiError);
+    expect((error as ApiError).code).toBe('UNKNOWN');
+    expect((error as ApiError).message).toContain('temporarily unavailable');
+  });
+
+  it('maps a malformed error envelope to a generic ApiError', async () => {
+    // An error field that is not an object, and one whose message is not a
+    // string, must both fall back to the safe generic message.
+    mockFetch({ ok: false, json: () => Promise.resolve({ error: 'catastrophe' }) });
+    const stringError = await askAssistant('x', 'en').catch((caught: unknown) => caught);
+    expect((stringError as ApiError).code).toBe('UNKNOWN');
+
+    mockFetch({ ok: false, json: () => Promise.resolve({ error: { code: 'X', message: 42 } }) });
+    const numberMessage = await askAssistant('x', 'en').catch((caught: unknown) => caught);
+    expect((numberMessage as ApiError).code).toBe('UNKNOWN');
+  });
+});
+
 describe('operations API calls', () => {
   it('fetchSnapshot returns the snapshot payload', async () => {
     mockFetch({
@@ -65,5 +93,18 @@ describe('operations API calls', () => {
     });
     const briefing = await requestBriefing();
     expect(briefing.briefing).toBe('TOP RISKS');
+  });
+});
+
+describe('toErrorMessage', () => {
+  it('returns the sanitized message of an ApiError', () => {
+    expect(toErrorMessage(new ApiError('BAD_REQUEST', 'question required'), 'fallback')).toBe(
+      'question required',
+    );
+  });
+
+  it('returns the fallback for any non-ApiError value', () => {
+    expect(toErrorMessage(new Error('leaky internal detail'), 'fallback')).toBe('fallback');
+    expect(toErrorMessage('a string', 'fallback')).toBe('fallback');
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@stadiumiq/server",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "StadiumIQ API — Gemini-powered multilingual fan assistant and stadium operations intelligence on Firestore.",
   "private": true,
   "license": "MIT",
@@ -13,7 +13,8 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:mutation": "stryker run"
   },
   "dependencies": {
     "@google-cloud/firestore": "^8.6.0",
@@ -27,6 +28,8 @@
     "zod": "^3.25.0"
   },
   "devDependencies": {
+    "@stryker-mutator/core": "^9.6.1",
+    "@stryker-mutator/vitest-runner": "^9.6.1",
     "@types/compression": "^1.8.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",

@@ -5,7 +5,7 @@
 export const DEFAULT_PORT = 8080;
 
 /** Reported by GET /api/health so a deploy can be matched to a commit. */
-export const APP_VERSION = '1.0.0';
+export const APP_VERSION = '1.1.0';
 
 /** Maximum accepted JSON request body. */
 export const JSON_BODY_LIMIT = '100kb';
@@ -42,6 +42,9 @@ export const TELEMETRY_TICK_MS = 60_000;
 export const TELEMETRY_MIN_DENSITY_PCT = 15;
 export const TELEMETRY_MAX_DENSITY_PCT = 98;
 export const TELEMETRY_MAX_STEP_PCT = 6;
+
+/** Upper bound of water-bottle refills added per simulated telemetry tick. */
+export const TELEMETRY_REFILL_MAX_GROWTH = 40;
 
 /** Zone density above which a zone is flagged busy / critical. */
 export const DENSITY_BUSY_PCT = 65;

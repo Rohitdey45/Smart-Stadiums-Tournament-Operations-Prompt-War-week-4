@@ -17,6 +17,17 @@ describe('toZoneOccupancy', () => {
       'critical',
     );
   });
+
+  it('stays comfortable just below the busy threshold', () => {
+    expect(toZoneOccupancy({ id: 'z', name: 'Z', capacity: 100, occupancy: 64 }).status).toBe(
+      'comfortable',
+    );
+  });
+
+  it('rounds a fractional density to the nearest whole percent', () => {
+    // 1/3 = 33.33% must round to 33, not carry the fraction.
+    expect(toZoneOccupancy({ id: 'z', name: 'Z', capacity: 3, occupancy: 1 }).densityPct).toBe(33);
+  });
 });
 
 describe('nextOccupancy', () => {

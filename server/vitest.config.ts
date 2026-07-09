@@ -16,10 +16,10 @@ export default defineConfig({
       // declarations (no executable code to cover).
       exclude: ['src/index.ts', 'src/**/types.ts'],
       thresholds: {
-        lines: 90,
-        functions: 90,
-        branches: 90,
-        statements: 90,
+        lines: 95,
+        functions: 95,
+        branches: 95,
+        statements: 95,
       },
     },
   },

@@ -9,7 +9,8 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    // No production source maps: original source stays out of the live bundle.
+    sourcemap: false,
     rollupOptions: {
       output: {
         // Split the router/runtime vendor bundle from app code so the initial
@@ -38,10 +39,10 @@ export default defineConfig({
       // declarations (no executable code to cover).
       exclude: ['src/main.tsx', 'src/lib/api-types.ts', 'src/vite-env.d.ts'],
       thresholds: {
-        lines: 90,
-        functions: 90,
-        branches: 90,
-        statements: 90,
+        lines: 95,
+        functions: 95,
+        branches: 95,
+        statements: 95,
       },
     },
   },

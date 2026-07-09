@@ -9,5 +9,13 @@ node_modules
 docs
 scripts
 **/tests
+e2e
+playwright.config.ts
+**/stryker.config.json
+**/reports
+**/.stryker-tmp
+playwright-report
+test-results
+.husky
 README.md
 SECURITY.md

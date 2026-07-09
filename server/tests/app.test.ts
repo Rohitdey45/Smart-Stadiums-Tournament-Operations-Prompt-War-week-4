@@ -39,6 +39,27 @@ describe('GET /api/health', () => {
   });
 });
 
+describe('GET /.well-known/security.txt', () => {
+  it('serves the RFC 9116 disclosure contact as plain text', async () => {
+    const res = await request(app).get('/.well-known/security.txt');
+    expect(res.status).toBe(200);
+    expect(res.type).toBe('text/plain');
+    expect(res.text).toContain('Contact:');
+    expect(res.text).toContain('Expires:');
+    // Must not fall through to the SPA shell.
+    expect(res.text).not.toContain('<!doctype html>');
+  });
+});
+
+describe('hardened HTTP headers', () => {
+  it('sets Helmet security headers and hides the framework', async () => {
+    const res = await request(app).get('/api/health');
+    expect(res.headers['x-content-type-options']).toBe('nosniff');
+    expect(res.headers['content-security-policy']).toContain("default-src 'self'");
+    expect(res.headers['x-powered-by']).toBeUndefined();
+  });
+});
+
 describe('GET /api/stadium/facilities', () => {
   it('returns all facilities without a filter', async () => {
     const res = await request(app).get('/api/stadium/facilities');

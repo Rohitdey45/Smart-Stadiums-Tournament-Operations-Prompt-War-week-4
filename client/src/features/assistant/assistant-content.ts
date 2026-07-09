@@ -17,6 +17,15 @@ export const LANGUAGE_OPTIONS: LanguageOption[] = [
   { code: 'ar', label: 'العربية' },
 ];
 
+/**
+ * Narrows an arbitrary string (e.g. a `<select>` value) to a
+ * SupportedLanguage, falling back to English if it is not a recognised code.
+ * Cast-free: the matched option's `code` is already typed as the union.
+ */
+export function parseLanguage(value: string): SupportedLanguage {
+  return LANGUAGE_OPTIONS.find((option) => option.code === value)?.code ?? 'en';
+}
+
 /** One-tap questions covering navigation, accessibility and transport. */
 export const QUICK_ACTIONS: string[] = [
   'Which gate should I use for section 150?',
