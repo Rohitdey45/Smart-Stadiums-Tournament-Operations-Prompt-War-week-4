@@ -12,9 +12,9 @@ grounded navigation, accessibility and transport help; organizers get live
 crowd intelligence and AI-generated operational briefings for real-time
 decisions.
 
-**Live demo:** <https://stadiumiq-851755555005.asia-south1.run.app>
+**Live demo:** <https://stadiumiq-331244069963.asia-south1.run.app>
 **Repository:** <https://github.com/Auenchanters/Virtual-Prompt-war-Week-4>
-**Region:** asia-south1 · **GCP project:** week-4-501612
+**Region:** asia-south1 · **GCP project:** project-da29f6cf-ccbd-43b6-8b3
 
 ---
 
@@ -273,7 +273,7 @@ See [SECURITY.md](SECURITY.md) for the full threat model.
   code on every push, on pull requests, and weekly.
 - **Least-privilege CI**: every workflow requests only `contents: read`.
 - **Coordinated disclosure**: a vulnerability contact is published at
-  [`/.well-known/security.txt`](https://stadiumiq-851755555005.asia-south1.run.app/.well-known/security.txt)
+  [`/.well-known/security.txt`](https://stadiumiq-331244069963.asia-south1.run.app/.well-known/security.txt)
   (RFC 9116), served by an explicit route in
   [`server/src/middleware/security.ts`](server/src/middleware/security.ts).
 
