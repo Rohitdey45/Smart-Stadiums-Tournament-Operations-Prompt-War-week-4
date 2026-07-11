@@ -3,14 +3,31 @@
 // for real gate/turnstile sensors — swapping it for a sensor ingest keeps
 // every read path unchanged (see docs/decisions.md). Pure density logic
 // lives in crowd.ts.
-import { FieldValue } from '@google-cloud/firestore';
+import { FieldValue, type QueryDocumentSnapshot } from '@google-cloud/firestore';
+import type { z } from 'zod';
 
 import { TELEMETRY_REFILL_MAX_GROWTH } from '../../config/constants.js';
 import { COLLECTIONS, getFirestore, SUSTAINABILITY_DOC_ID } from '../../lib/firestore.js';
 import { logger } from '../../lib/logger.js';
 import { nextOccupancy, toZoneOccupancy } from './crowd.js';
+import { incidentSchema, sustainabilityMetricsSchema, zoneRecordSchema } from './schemas.js';
 import { BASELINE_INCIDENTS, BASELINE_SUSTAINABILITY, BASELINE_ZONES } from './seed-data.js';
-import type { Incident, OpsSnapshot, SustainabilityMetrics, ZoneRecord } from './types.js';
+import type { OpsSnapshot } from './types.js';
+
+/**
+ * Parses Firestore documents against a schema, skipping (and logging) any
+ * that fail — a corrupt document must never take down the snapshot pipeline.
+ */
+function parseDocuments<T>(schema: z.ZodType<T>, documents: QueryDocumentSnapshot[]): T[] {
+  return documents.flatMap((document) => {
+    const parsed = schema.safeParse(document.data());
+    if (!parsed.success) {
+      logger.warn({ id: document.id }, 'Skipping malformed operations document');
+      return [];
+    }
+    return [parsed.data];
+  });
+}
 
 /** Seeds baseline zones, incidents and sustainability if the DB is empty. */
 export async function ensureSeeded(): Promise<void> {
@@ -43,14 +60,16 @@ export async function getSnapshot(): Promise<OpsSnapshot> {
     db.collection(COLLECTIONS.sustainability).doc(SUSTAINABILITY_DOC_ID).get(),
   ]);
 
-  const zones = zonesSnap.docs
-    .map((doc) => toZoneOccupancy(doc.data() as ZoneRecord))
+  const zones = parseDocuments(zoneRecordSchema, zonesSnap.docs)
+    .map(toZoneOccupancy)
     .sort((a, b) => b.densityPct - a.densityPct);
-  const incidents = (incidentsSnap.docs.map((doc) => doc.data()) as Incident[]).sort((a, b) =>
+  const incidents = parseDocuments(incidentSchema, incidentsSnap.docs).sort((a, b) =>
     b.reportedAt.localeCompare(a.reportedAt),
   );
-  const sustainability =
-    (sustainabilitySnap.data() as SustainabilityMetrics | undefined) ?? BASELINE_SUSTAINABILITY;
+  const parsedSustainability = sustainabilityMetricsSchema.safeParse(sustainabilitySnap.data());
+  const sustainability = parsedSustainability.success
+    ? parsedSustainability.data
+    : BASELINE_SUSTAINABILITY;
 
   return { zones, incidents, sustainability, generatedAt: new Date().toISOString() };
 }
@@ -69,8 +88,12 @@ export async function advanceTelemetry(random: () => number = Math.random): Prom
   }
   const batch = db.batch();
   for (const doc of zonesSnap.docs) {
-    const zone = doc.data() as ZoneRecord;
-    batch.update(doc.ref, { occupancy: nextOccupancy(zone, random) });
+    const zone = zoneRecordSchema.safeParse(doc.data());
+    if (!zone.success) {
+      logger.warn({ id: doc.id }, 'Skipping malformed zone during telemetry tick');
+      continue;
+    }
+    batch.update(doc.ref, { occupancy: nextOccupancy(zone.data, random) });
   }
   const refillGrowth = Math.round(random() * TELEMETRY_REFILL_MAX_GROWTH);
   batch.set(

@@ -32,10 +32,10 @@ beforeEach(() => {
 });
 
 describe('GET /api/health', () => {
-  it('reports ok with a version', async () => {
+  it('reports ok without volunteering build metadata', async () => {
     const res = await request(app).get('/api/health');
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ status: 'ok', version: expect.any(String) as string });
+    expect(res.body).toEqual({ status: 'ok' });
   });
 });
 
@@ -57,6 +57,33 @@ describe('hardened HTTP headers', () => {
     expect(res.headers['x-content-type-options']).toBe('nosniff');
     expect(res.headers['content-security-policy']).toContain("default-src 'self'");
     expect(res.headers['x-powered-by']).toBeUndefined();
+  });
+
+  it('ships a CSP with no unsafe grants of any kind', async () => {
+    const res = await request(app).get('/api/health');
+    expect(res.headers['content-security-policy']).not.toContain('unsafe-');
+    expect(res.headers['content-security-policy']).toContain("object-src 'none'");
+    expect(res.headers['content-security-policy']).toContain("frame-ancestors 'none'");
+  });
+
+  it('denies unused browser features via Permissions-Policy', async () => {
+    const res = await request(app).get('/api/health');
+    expect(res.headers['permissions-policy']).toContain('camera=()');
+    expect(res.headers['permissions-policy']).toContain('geolocation=()');
+  });
+
+  it('forbids caching of API responses', async () => {
+    const res = await request(app).get('/api/health');
+    expect(res.headers['cache-control']).toBe('no-store');
+  });
+
+  it('refuses cross-site form-encoded POSTs to the API (CSRF hardening)', async () => {
+    const res = await request(app)
+      .post('/api/operations/briefing')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send('a=1');
+    expect(res.status).toBe(415);
+    expect(res.body.error.code).toBe('UNSUPPORTED_MEDIA_TYPE');
   });
 });
 

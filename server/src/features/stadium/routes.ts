@@ -2,16 +2,16 @@
 // the logic.
 import { Router } from 'express';
 
-import { validateQuery, VALIDATED_QUERY_KEY } from '../../middleware/validate.js';
-import { facilitiesQuerySchema, type FacilitiesQuery } from './schemas.js';
+import { validateQuery, validatedQuery } from '../../middleware/validate.js';
+import { facilitiesQuerySchema } from './schemas.js';
 import { getFacilities } from './service.js';
 import { VENUE } from './venue-data.js';
 
 /** Router mounted at /api/stadium. */
 export const stadiumRoutes: Router = Router();
 
-stadiumRoutes.get('/facilities', validateQuery(facilitiesQuerySchema), (_req, res) => {
-  const query = res.locals[VALIDATED_QUERY_KEY] as FacilitiesQuery;
+stadiumRoutes.get('/facilities', validateQuery(facilitiesQuerySchema), (req, res) => {
+  const query = validatedQuery(facilitiesQuerySchema, req);
   res.json({ facilities: getFacilities(query.category) });
 });
 

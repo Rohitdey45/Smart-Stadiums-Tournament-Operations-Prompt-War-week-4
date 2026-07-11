@@ -23,10 +23,6 @@ interface UseAssistantResult {
   ask: (question: string) => Promise<void>;
 }
 
-function makeId(): string {
-  return crypto.randomUUID();
-}
-
 /** Manages the assistant conversation, language selection and request state. */
 export function useAssistant(): UseAssistantResult {
   const [turns, setTurns] = useState<ChatTurn[]>([]);
@@ -42,12 +38,17 @@ export function useAssistant(): UseAssistantResult {
       }
       setError(null);
       setIsLoading(true);
-      setTurns((prev) => [...prev, { id: makeId(), role: 'fan', text: trimmed }]);
+      setTurns((prev) => [...prev, { id: crypto.randomUUID(), role: 'fan', text: trimmed }]);
       try {
         const result = await askAssistant(trimmed, language);
         setTurns((prev) => [
           ...prev,
-          { id: makeId(), role: 'assistant', text: result.answer, language: result.language },
+          {
+            id: crypto.randomUUID(),
+            role: 'assistant',
+            text: result.answer,
+            language: result.language,
+          },
         ]);
       } catch (caught) {
         setError(

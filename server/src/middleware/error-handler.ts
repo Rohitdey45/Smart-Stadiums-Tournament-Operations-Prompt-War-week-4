@@ -7,9 +7,13 @@ import { logger } from '../lib/logger.js';
 
 const INTERNAL_ERROR_MESSAGE = 'Something went wrong on our side. Please try again.';
 
-/** 404 handler for unmatched routes, forwarded to the error handler. */
-export function notFoundHandler(req: Request, _res: Response, next: NextFunction): void {
-  next(AppError.notFound(`No route matches ${req.method} ${req.path}`));
+/**
+ * 404 handler for unmatched routes, forwarded to the error handler. The body
+ * is a static message — the offending method and path go to the structured
+ * log, never reflected back into the response.
+ */
+export function notFoundHandler(_req: Request, _res: Response, next: NextFunction): void {
+  next(AppError.notFound('No matching route.'));
 }
 
 /** Express error middleware: structured log + sanitized JSON body. */

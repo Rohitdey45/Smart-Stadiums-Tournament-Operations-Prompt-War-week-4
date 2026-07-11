@@ -3,8 +3,8 @@ import { Router } from 'express';
 
 import { asyncHandler } from '../../middleware/async-handler.js';
 import { genAiLimiter } from '../../middleware/rate-limit.js';
-import { validateBody } from '../../middleware/validate.js';
-import { askRequestSchema, type AskRequest } from './schemas.js';
+import { validateBody, validatedBody } from '../../middleware/validate.js';
+import { askRequestSchema } from './schemas.js';
 import { askAssistant } from './service.js';
 
 /** Router mounted at /api/assistant. */
@@ -15,6 +15,6 @@ assistantRoutes.post(
   genAiLimiter,
   validateBody(askRequestSchema),
   asyncHandler(async (req, res) => {
-    res.json(await askAssistant(req.body as AskRequest));
+    res.json(await askAssistant(validatedBody(askRequestSchema, req)));
   }),
 );

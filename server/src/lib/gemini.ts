@@ -10,6 +10,7 @@ import {
 } from '../config/constants.js';
 import { AppError } from './app-error.js';
 import { logger } from './logger.js';
+import { sanitizeModelText } from './sanitize-model-text.js';
 
 let client: GoogleGenAI | undefined;
 
@@ -35,10 +36,12 @@ async function requestText(prompt: string): Promise<string | undefined> {
  * Generates plain text from Gemini for the given prompt.
  *
  * Transient failures are retried once; persistent failures surface as a 502
- * AppError so the client sees a sanitized, actionable message.
+ * AppError so the client sees a sanitized, actionable message. Model output
+ * is untrusted: it passes through {@link sanitizeModelText} (markup and
+ * control characters stripped, length capped) before reaching any caller.
  *
  * @param prompt - Full prompt including system framing and grounding data.
- * @returns The model's text response.
+ * @returns The model's sanitized text response.
  */
 export async function generateText(prompt: string): Promise<string> {
   let text: string | undefined;
@@ -53,8 +56,9 @@ export async function generateText(prompt: string): Promise<string> {
       throw AppError.upstreamFailure('gemini', 'The AI service is temporarily unavailable.');
     }
   }
-  if (text === undefined || text.trim() === '') {
+  const sanitized = text === undefined ? '' : sanitizeModelText(text);
+  if (sanitized === '') {
     throw AppError.upstreamFailure('gemini', 'The AI service returned an empty response.');
   }
-  return text.trim();
+  return sanitized;
 }

@@ -1,5 +1,7 @@
 // Typed fetch wrapper. Every network call goes through here so error
-// handling and JSON parsing are consistent across features.
+// handling, JSON parsing, and response-shape validation are consistent
+// across features: responses are checked at runtime with type guards —
+// the same "parse, don't trust" rule the server applies to its inputs.
 import type {
   ApiErrorBody,
   AssistantAnswer,
@@ -29,20 +31,48 @@ export function toErrorMessage(caught: unknown, fallback: string): string {
   return caught instanceof ApiError ? caught.message : fallback;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
 function isErrorBody(value: unknown): value is ApiErrorBody {
-  if (typeof value !== 'object' || value === null || !('error' in value)) {
+  if (!isRecord(value) || !('error' in value)) {
     return false;
   }
   const { error } = value;
+  return isRecord(error) && typeof error.message === 'string';
+}
+
+function isAssistantAnswer(value: unknown): value is AssistantAnswer {
   return (
-    typeof error === 'object' &&
-    error !== null &&
-    'message' in error &&
-    typeof error.message === 'string'
+    isRecord(value) &&
+    typeof value.answer === 'string' &&
+    typeof value.language === 'string' &&
+    typeof value.cached === 'boolean'
   );
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+function isOpsSnapshot(value: unknown): value is OpsSnapshot {
+  return (
+    isRecord(value) &&
+    Array.isArray(value.zones) &&
+    Array.isArray(value.incidents) &&
+    isRecord(value.sustainability) &&
+    typeof value.generatedAt === 'string'
+  );
+}
+
+function isOpsBriefing(value: unknown): value is OpsBriefing {
+  return (
+    isRecord(value) && typeof value.briefing === 'string' && typeof value.generatedAt === 'string'
+  );
+}
+
+async function request<T>(
+  path: string,
+  validate: (value: unknown) => value is T,
+  init?: RequestInit,
+): Promise<T> {
   let response: Response;
   try {
     response = await fetch(path, {
@@ -60,7 +90,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       : { code: 'UNKNOWN', message: GENERIC_ERROR };
     throw new ApiError(code, message);
   }
-  return payload as T;
+  if (!validate(payload)) {
+    throw new ApiError('MALFORMED', GENERIC_ERROR);
+  }
+  return payload;
 }
 
 /** Asks the fan assistant a grounded question in the given language. */
@@ -68,7 +101,7 @@ export function askAssistant(
   question: string,
   language: SupportedLanguage,
 ): Promise<AssistantAnswer> {
-  return request<AssistantAnswer>('/api/assistant/ask', {
+  return request('/api/assistant/ask', isAssistantAnswer, {
     method: 'POST',
     body: JSON.stringify({ question, language }),
   });
@@ -76,10 +109,10 @@ export function askAssistant(
 
 /** Fetches the current operations snapshot. */
 export function fetchSnapshot(): Promise<OpsSnapshot> {
-  return request<OpsSnapshot>('/api/operations/snapshot');
+  return request('/api/operations/snapshot', isOpsSnapshot);
 }
 
 /** Requests a freshly generated AI operations briefing. */
 export function requestBriefing(): Promise<OpsBriefing> {
-  return request<OpsBriefing>('/api/operations/briefing', { method: 'POST' });
+  return request('/api/operations/briefing', isOpsBriefing, { method: 'POST' });
 }

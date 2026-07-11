@@ -18,17 +18,17 @@ function describeSnapshot(snapshot: OpsSnapshot): string {
     (incident) =>
       `- [${incident.status}] ${incident.severity} ${incident.category} in ${incident.zoneId}: ${incident.summary}`,
   );
-  const s = snapshot.sustainability;
+  const sustainability = snapshot.sustainability;
   return [
     'ZONE DENSITY:',
     ...zoneLines,
     'INCIDENTS:',
     ...incidentLines,
     'SUSTAINABILITY:',
-    `- Waste diverted from landfill: ${String(s.wasteDivertedPct)}%`,
-    `- Energy used today: ${String(s.energyKwh)} kWh`,
-    `- Water bottle refills: ${String(s.waterRefillCount)}`,
-    `- CO2 saved vs. baseline: ${String(s.co2SavedKg)} kg`,
+    `- Waste diverted from landfill: ${String(sustainability.wasteDivertedPct)}%`,
+    `- Energy used today: ${String(sustainability.energyKwh)} kWh`,
+    `- Water bottle refills: ${String(sustainability.waterRefillCount)}`,
+    `- CO2 saved vs. baseline: ${String(sustainability.co2SavedKg)} kg`,
   ].join('\n');
 }
 

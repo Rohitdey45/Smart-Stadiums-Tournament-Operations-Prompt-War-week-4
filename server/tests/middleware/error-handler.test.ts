@@ -52,12 +52,13 @@ describe('errorHandler', () => {
 });
 
 describe('notFoundHandler', () => {
-  it('forwards a 404 AppError naming the unmatched route', () => {
+  it('forwards a 404 AppError with a static, non-reflected message', () => {
     const forward = vi.fn();
     notFoundHandler(req, makeRes(), forward as NextFunction);
     const forwarded = (forward.mock.calls[0] as unknown[])[0] as AppError;
     expect(forwarded).toBeInstanceOf(AppError);
     expect(forwarded.statusCode).toBe(404);
-    expect(forwarded.message).toContain('GET /test');
+    // Request input must never be echoed back into the response body.
+    expect(forwarded.message).toBe('No matching route.');
   });
 });

@@ -5,14 +5,20 @@ import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
 
-import { APP_VERSION, JSON_BODY_LIMIT } from './config/constants.js';
+import { JSON_BODY_LIMIT } from './config/constants.js';
 import { env } from './config/env.js';
 import { assistantRoutes } from './features/assistant/routes.js';
 import { operationsRoutes } from './features/operations/routes.js';
 import { stadiumRoutes } from './features/stadium/routes.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
 import { apiLimiter } from './middleware/rate-limit.js';
-import { securityHeaders, securityTxtHandler } from './middleware/security.js';
+import {
+  noStoreApi,
+  permissionsPolicy,
+  requireJsonPosts,
+  securityHeaders,
+  securityTxtHandler,
+} from './middleware/security.js';
 import { mountClient } from './middleware/static-client.js';
 
 function corsOrigins(): string[] {
@@ -28,9 +34,14 @@ export function buildApp(): express.Express {
   app.disable('x-powered-by');
 
   app.use(securityHeaders());
+  app.use(permissionsPolicy);
   app.use(cors({ origin: corsOrigins() }));
   app.use(compression());
   app.use(express.json({ limit: JSON_BODY_LIMIT }));
+
+  // Live operational data must never be stored by browsers or intermediaries,
+  // and API POSTs only accept JSON (cross-site form posts are refused).
+  app.use('/api', noStoreApi, requireJsonPosts);
 
   // Coordinated-disclosure contact (RFC 9116). Registered before the SPA
   // fallback so it resolves to the file, not the client shell.
@@ -40,7 +51,8 @@ export function buildApp(): express.Express {
   // the bare /healthz path and answers it at the edge before Cloud Run. Placed
   // ahead of the rate limiter so health checks are never throttled.
   app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', version: APP_VERSION });
+    // Status only — no version or build metadata on an unauthenticated route.
+    res.json({ status: 'ok' });
   });
 
   app.use('/api', apiLimiter);

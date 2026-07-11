@@ -1,7 +1,7 @@
 {
   "name": "stadiumiq",
   "version": "1.1.0",
-  "description": "GenAI-enabled Smart Stadiums & Tournament Operations platform for the FIFA World Cup 2026 — multilingual fan navigation, crowd management, accessibility, transportation guidance, sustainability tracking, and real-time operational decision support.",
+  "description": "GenAI-enabled Smart Stadiums & Tournament Operations platform for the FIFA World Cup 2026 \u2014 multilingual fan navigation, crowd management, accessibility, transportation guidance, sustainability tracking, and real-time operational decision support.",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -47,5 +47,8 @@
     "prettier": "^3.6.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.35.0"
+  },
+  "overrides": {
+    "qs": "6.15.3"
   }
 }

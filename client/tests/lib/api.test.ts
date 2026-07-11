@@ -75,6 +75,15 @@ describe('error body handling', () => {
   });
 });
 
+describe('response-shape validation', () => {
+  it('rejects a 200 response whose body is not the expected shape', async () => {
+    mockFetch({ ok: true, json: () => Promise.resolve({ unexpected: 'shape' }) });
+    const error = await askAssistant('x', 'en').catch((caught: unknown) => caught);
+    expect(error).toBeInstanceOf(ApiError);
+    expect((error as ApiError).code).toBe('MALFORMED');
+  });
+});
+
 describe('operations API calls', () => {
   it('fetchSnapshot returns the snapshot payload', async () => {
     mockFetch({

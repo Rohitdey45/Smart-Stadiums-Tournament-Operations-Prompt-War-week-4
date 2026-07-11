@@ -1,12 +1,10 @@
-// Request validation at the trust boundary: every body/query is parsed with
-// a strict zod schema before feature logic runs.
+// Request validation at the trust boundary: every body/query is gated by a
+// strict zod schema before feature logic runs, then read back through typed
+// accessors — handlers never cast and never touch unvalidated input.
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import type { z } from 'zod';
 
 import { AppError } from '../lib/app-error.js';
-
-/** res.locals key under which validated query params are stored. */
-export const VALIDATED_QUERY_KEY = 'validatedQuery';
 
 function firstIssue(error: z.ZodError): string {
   const issue = error.issues[0];
@@ -17,7 +15,7 @@ function firstIssue(error: z.ZodError): string {
   return path === '' ? issue.message : `${path}: ${issue.message}`;
 }
 
-/** Parses and replaces `req.body` with the schema's typed output, or 400s. */
+/** Rejects the request with a field-naming 400 unless the body satisfies the schema. */
 export function validateBody(schema: z.ZodTypeAny): RequestHandler {
   return (req: Request, _res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body);
@@ -25,23 +23,32 @@ export function validateBody(schema: z.ZodTypeAny): RequestHandler {
       next(AppError.badRequest(firstIssue(result.error)));
       return;
     }
-    req.body = result.data as unknown;
     next();
   };
 }
 
-/**
- * Parses `req.query` against the schema, storing the typed result on
- * `res.locals[VALIDATED_QUERY_KEY]` for the route handler to read back.
- */
+/** Rejects the request with a field-naming 400 unless the query satisfies the schema. */
 export function validateQuery(schema: z.ZodTypeAny): RequestHandler {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.query);
     if (!result.success) {
       next(AppError.badRequest(firstIssue(result.error)));
       return;
     }
-    res.locals[VALIDATED_QUERY_KEY] = result.data as unknown;
     next();
   };
+}
+
+/**
+ * Typed read of a request body already gated by {@link validateBody}.
+ * Parsing again (rather than caching and casting) keeps the type flowing
+ * straight from the schema — no assertions anywhere in the request path.
+ */
+export function validatedBody<T>(schema: z.ZodType<T, z.ZodTypeDef, unknown>, req: Request): T {
+  return schema.parse(req.body);
+}
+
+/** Typed read of query params already gated by {@link validateQuery}. */
+export function validatedQuery<T>(schema: z.ZodType<T, z.ZodTypeDef, unknown>, req: Request): T {
+  return schema.parse(req.query);
 }

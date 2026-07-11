@@ -62,4 +62,25 @@ describe('ensureSeeded / getSnapshot / advanceTelemetry', () => {
     await advanceTelemetry(() => 1);
     expect(fakeDb.read('sustainability', 'current')).toBeUndefined();
   });
+
+  it('skips malformed documents instead of crashing the snapshot pipeline', async () => {
+    await ensureSeeded();
+    await fakeDb.collection('zones').doc('corrupt').set({ id: 'corrupt', capacity: 'NaN' });
+    await fakeDb.collection('incidents').doc('corrupt').set({ id: 'corrupt' });
+
+    const snapshot = await getSnapshot();
+
+    expect(snapshot.zones.some((zone) => zone.id === 'corrupt')).toBe(false);
+    expect(snapshot.incidents.some((incident) => incident.id === 'corrupt')).toBe(false);
+    expect(snapshot.zones.length).toBeGreaterThan(0);
+  });
+
+  it('advanceTelemetry leaves malformed zone documents untouched', async () => {
+    await ensureSeeded();
+    await fakeDb.collection('zones').doc('corrupt').set({ id: 'corrupt', capacity: 'NaN' });
+
+    await advanceTelemetry(() => 1);
+
+    expect(fakeDb.read('zones', 'corrupt')).toEqual({ id: 'corrupt', capacity: 'NaN' });
+  });
 });
