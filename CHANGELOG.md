@@ -49,5 +49,5 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Full test suite with enforced 90% coverage thresholds, CI (lint, typecheck,
   coverage, build, gitleaks, npm audit), and WCAG 2.1 AA accessibility.
 
-[1.1.0]: https://github.com/Auenchanters/Virtual-Prompt-war-Week-4/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/Auenchanters/Virtual-Prompt-war-Week-4/releases/tag/v1.0.0
+[1.1.0]: https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/releases/tag/v1.0.0

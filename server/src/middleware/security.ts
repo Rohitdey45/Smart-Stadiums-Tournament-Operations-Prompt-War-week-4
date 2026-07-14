@@ -13,7 +13,7 @@ import { AppError } from '../lib/app-error.js';
  * regardless of dotfile-serving quirks and is unit-testable without a build.
  */
 export const SECURITY_TXT: string = [
-  'Contact: mailto:usy.joseph@gmail.com',
+  'Contact: mailto:deyrohitd12@gmail.com',
   'Expires: 2027-01-01T00:00:00.000Z',
   'Preferred-Languages: en',
   'Canonical: https://stadiumiq-331244069963.asia-south1.run.app/.well-known/security.txt',

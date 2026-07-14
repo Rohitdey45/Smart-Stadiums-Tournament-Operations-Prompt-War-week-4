@@ -1,7 +1,7 @@
 # StadiumIQ — Smart Stadiums & Tournament Operations
 
-[![CI](https://github.com/Auenchanters/Virtual-Prompt-war-Week-4/actions/workflows/ci.yml/badge.svg)](https://github.com/Auenchanters/Virtual-Prompt-war-Week-4/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/Auenchanters/Virtual-Prompt-war-Week-4/actions/workflows/codeql.yml/badge.svg)](https://github.com/Auenchanters/Virtual-Prompt-war-Week-4/actions/workflows/codeql.yml)
+[![CI](https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/actions/workflows/ci.yml/badge.svg)](https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/actions/workflows/codeql.yml/badge.svg)](https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/actions/workflows/codeql.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D22-brightgreen.svg)](package.json)
 [![Coverage](https://img.shields.io/badge/coverage-100%25_lines-brightgreen.svg)](#testing)
@@ -13,7 +13,7 @@ crowd intelligence and AI-generated operational briefings for real-time
 decisions.
 
 **Live demo:** <https://stadiumiq-331244069963.asia-south1.run.app>
-**Repository:** <https://github.com/Auenchanters/Virtual-Prompt-war-Week-4>
+**Repository:** <https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4>
 **Region:** asia-south1 · **GCP project:** project-da29f6cf-ccbd-43b6-8b3
 
 ---
@@ -355,6 +355,6 @@ Where each evaluation area is satisfied, so nothing has to be hunted for:
 
 ## Team
 
-Built by Utkarsh Singh Yadav for Hack2skill PromptWars Virtual — Week 4.
+Built by Rohit Dey for Hack2skill PromptWars Virtual — Week 4.
 
 Licensed under the [MIT License](LICENSE).

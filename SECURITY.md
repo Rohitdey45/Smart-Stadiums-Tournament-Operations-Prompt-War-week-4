@@ -59,7 +59,7 @@ exposed to clients.
 ## Reporting a vulnerability
 
 Open a GitHub issue titled `[security]` (no exploit details), or email
-usy.joseph@gmail.com. You will get a response within 48 hours. The same contact
+deyrohitd12@gmail.com. You will get a response within 48 hours. The same contact
 is published for machine discovery at
 [`/.well-known/security.txt`](https://stadiumiq-331244069963.asia-south1.run.app/.well-known/security.txt)
 (RFC 9116).
