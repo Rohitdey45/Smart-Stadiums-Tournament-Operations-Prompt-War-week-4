@@ -75,9 +75,16 @@ async function request<T>(
 ): Promise<T> {
   let response: Response;
   try {
+    const mergedHeaders = new Headers();
+    mergedHeaders.set('Content-Type', 'application/json');
+    if (init?.headers) {
+      new Headers(init.headers).forEach((value, key) => {
+        mergedHeaders.set(key, value);
+      });
+    }
     response = await fetch(path, {
       ...init,
-      headers: { 'Content-Type': 'application/json' },
+      headers: mergedHeaders,
     });
   } catch {
     throw new ApiError('NETWORK', GENERIC_ERROR);

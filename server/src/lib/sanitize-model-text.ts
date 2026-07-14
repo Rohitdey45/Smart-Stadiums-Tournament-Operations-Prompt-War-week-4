@@ -34,12 +34,13 @@ function isAllowedCharacter(character: string): boolean {
  * Idempotent and safe for empty input.
  */
 export function sanitizeModelText(text: string): string {
-  let kept = '';
-  for (const character of text.replace(HTML_TAG_PATTERN, '')) {
+  const noTags = text.replace(HTML_TAG_PATTERN, '');
+  const characters: string[] = [];
+  for (const character of noTags) {
     if (isAllowedCharacter(character)) {
-      kept += character;
+      characters.push(character);
     }
   }
-  const cleaned = kept.trim();
+  const cleaned = characters.join('').trim();
   return cleaned.length > MAX_MODEL_TEXT_LENGTH ? cleaned.slice(0, MAX_MODEL_TEXT_LENGTH) : cleaned;
 }

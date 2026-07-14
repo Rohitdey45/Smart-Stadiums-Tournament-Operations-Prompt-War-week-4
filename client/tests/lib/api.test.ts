@@ -32,6 +32,8 @@ describe('askAssistant', () => {
       question: 'Where is the accessible gate?',
       language: 'en',
     });
+    expect(init.headers).toBeInstanceOf(Headers);
+    expect((init.headers as Headers).get('Content-Type')).toBe('application/json');
   });
 
   it('throws an ApiError carrying the server message on a 4xx/5xx', async () => {

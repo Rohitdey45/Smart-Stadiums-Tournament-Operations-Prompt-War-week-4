@@ -30,6 +30,7 @@ export function errorHandler(
 
   logger.error(
     {
+      err: error,
       code: appError.code,
       statusCode: appError.statusCode,
       method: req.method,
