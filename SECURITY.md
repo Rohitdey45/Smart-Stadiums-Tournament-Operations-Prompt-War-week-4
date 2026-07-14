@@ -61,8 +61,7 @@ exposed to clients.
 Open a GitHub issue titled `[security]` (no exploit details), or email
 deyrohitd12@gmail.com. You will get a response within 48 hours. The same contact
 is published for machine discovery at
-[`/.well-known/security.txt`](https://stadiumiq-331244069963.asia-south1.run.app/.well-known/security.txt)
-(RFC 9116).
+`/.well-known/security.txt` (RFC 9116).
 
 ## Automated security checks
 

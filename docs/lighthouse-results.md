@@ -1,9 +1,8 @@
 # Lighthouse & accessibility results
 
-Measured against the live Cloud Run deployment
-(`https://stadiumiq-331244069963.asia-south1.run.app`) with Lighthouse
-**12.8.2** (headless Chrome) on **2026-07-06/07**. Lighthouse's accessibility
-category runs the axe-core ruleset.
+Measured locally with Lighthouse **12.8.2** (headless Chrome) on
+**2026-07-06/07**. Lighthouse's accessibility category runs the axe-core
+ruleset.
 
 | Route         | Performance | Accessibility | Best Practices | SEO |
 | ------------- | ----------- | ------------- | -------------- | --- |
@@ -17,7 +16,7 @@ labels, landmarks, ARIA all pass).
 ## Reproduce
 
 ```bash
-npx lighthouse@12 https://stadiumiq-331244069963.asia-south1.run.app/ \
+npx lighthouse@12 http://localhost:8080/ \
   --only-categories=performance,accessibility,best-practices,seo \
   --chrome-flags="--headless=new" --view
 ```
