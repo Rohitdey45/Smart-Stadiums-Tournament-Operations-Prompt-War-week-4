@@ -1,7 +1,7 @@
 {
-  "name": "stadiumiq",
+  "name": "stadium-akinator",
   "version": "1.1.0",
-  "description": "GenAI-enabled Smart Stadiums & Tournament Operations platform for the FIFA World Cup 2026 \u2014 multilingual fan navigation, crowd management, accessibility, transportation guidance, sustainability tracking, and real-time operational decision support.",
+  "description": "GenAI-enabled Smart Stadiums & Tournament Operations platform for the FIFA World Cup 2026 — multilingual fan navigation, crowd management, accessibility, transportation guidance, sustainability tracking, and real-time operational decision support.",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -25,7 +25,7 @@
     "test:coverage": "npm run test:coverage --workspaces",
     "test:e2e": "playwright test",
     "test:e2e:live": "playwright test --config playwright.live.config.ts",
-    "test:mutation": "npm run test:mutation -w @stadiumiq/server",
+    "test:mutation": "npm run test:mutation -w @stadium-akinator/server",
     "prepare": "husky || true"
   },
   "lint-staged": {

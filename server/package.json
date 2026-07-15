@@ -1,7 +1,7 @@
 {
-  "name": "@stadiumiq/server",
+  "name": "@stadium-akinator/server",
   "version": "1.1.0",
-  "description": "StadiumIQ API — Gemini-powered multilingual fan assistant and stadium operations intelligence on Firestore.",
+  "description": "Stadium Akinator API — Gemini-powered multilingual fan assistant and stadium operations intelligence on Firestore.",
   "private": true,
   "license": "MIT",
   "type": "module",

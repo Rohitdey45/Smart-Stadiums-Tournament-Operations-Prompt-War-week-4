@@ -1,4 +1,4 @@
-# StadiumIQ — Smart Stadiums & Tournament Operations
+# Stadium Akinator — Smart Stadiums & Tournament Operations
 
 [![CI](https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/actions/workflows/ci.yml/badge.svg)](https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/actions/workflows/codeql.yml/badge.svg)](https://github.com/Rohitdey45/Smart-Stadiums-Tournament-Operations-Prompt-War-week-4/actions/workflows/codeql.yml)
@@ -100,7 +100,7 @@ and the request lifecycle are in [Architecture](#architecture) and
 Every requirement below is a working, demonstrable flow on the live URL.
 Nothing ships that is not a row in this table.
 
-| #   | Requirement (problem-statement theme) | How StadiumIQ delivers it                                                                                          | Live route               |
+| #   | Requirement (problem-statement theme) | How Stadium Akinator delivers it                                                                                   | Live route               |
 | --- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------ |
 | R1  | **Navigation**                        | Assistant gives grounded wayfinding — which gate serves a section, step-free routes to any facility                | `/assistant`             |
 | R2  | **Crowd management**                  | Operations board shows per-zone density with comfortable/busy/critical status; AI briefing recommends redirections | `/operations`            |
@@ -132,7 +132,7 @@ Feature-folder monorepo (npm workspaces). Route handlers dispatch; feature
 services hold logic; `lib/` holds pure, reusable utilities.
 
 ```text
-stadiumiq/
+stadium-akinator/
 ├── server/                       Node 22 · Express 5 · TypeScript
 │   └── src/
 │       ├── config/               env (zod-validated) + constants
@@ -325,7 +325,7 @@ Built to **WCAG 2.1 AA** and verified with axe and Lighthouse.
 
 Each service is load-bearing, accessed through its official SDK.
 
-| Service                      | Role in StadiumIQ                                                                                                  | Where                                                      |
+| Service                      | Role in Stadium Akinator                                                                                           | Where                                                      |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
 | **Cloud Run**                | Hosts the single containerized service (API + client), `--min-instances=1`/`--max-instances=3`, region asia-south1 | `Dockerfile`, [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | **Gemini (`@google/genai`)** | Generates grounded multilingual answers and operations briefings                                                   | `server/src/lib/gemini.ts`                                 |

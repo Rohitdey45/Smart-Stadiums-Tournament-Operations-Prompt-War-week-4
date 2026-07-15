@@ -1,4 +1,4 @@
-# Contributing to StadiumIQ
+# Contributing to Stadium Akinator
 
 Thanks for your interest. This document explains how to set up the project, the
 quality bar every change must clear, and how to open a pull request.

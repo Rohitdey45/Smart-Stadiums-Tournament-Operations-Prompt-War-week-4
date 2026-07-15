@@ -23,7 +23,7 @@ export default defineConfig({
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: `npm run build -w @stadiumiq/client && npm run preview -w @stadiumiq/client -- --port ${PREVIEW_PORT} --strictPort`,
+    command: `npm run build -w @stadium-akinator/client && npm run preview -w @stadium-akinator/client -- --port ${PREVIEW_PORT} --strictPort`,
     url: `http://localhost:${PREVIEW_PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

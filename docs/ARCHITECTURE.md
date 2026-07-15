@@ -1,6 +1,6 @@
 # Architecture
 
-StadiumIQ is a single, layered, inward-pointing system: one Cloud Run service
+Stadium Akinator is a single, layered, inward-pointing system: one Cloud Run service
 serves both the API and the built React client. This document describes the
 structure and runtime behaviour; the _reasoning_ behind the load-bearing
 choices lives in [decisions.md](decisions.md).
@@ -96,7 +96,7 @@ and production dependencies into a slim `node:22-slim` runtime running as a
 non-root user. The exact deploy command:
 
 ```bash
-gcloud run deploy stadiumiq --source . --region=asia-south1   --min-instances=1 --max-instances=3 --memory=512Mi   --set-secrets=GEMINI_API_KEY=GEMINI_API_KEY:latest --allow-unauthenticated
+gcloud run deploy stadium-akinator --source . --region=asia-south1   --min-instances=1 --max-instances=3 --memory=512Mi   --set-secrets=GEMINI_API_KEY=GEMINI_API_KEY:latest --allow-unauthenticated
 ```
 
 `--min-instances=1` keeps a warm instance for fast first responses;
