@@ -60,9 +60,9 @@ export default tseslint.config(
     extends: [tseslint.configs.disableTypeChecked],
   },
   {
-    // E2E specs and tool configs live outside the workspace tsconfigs; lint them
+    // E2E specs, Vercel entrypoint, and tool configs live outside the workspace tsconfigs; lint them
     // for style without type-aware rules (same treatment as plain JS files).
-    files: ['e2e/**/*.ts', 'playwright.config.ts', 'playwright.live.config.ts'],
+    files: ['e2e/**/*.ts', 'api/index.ts', 'playwright.config.ts', 'playwright.live.config.ts'],
     extends: [tseslint.configs.disableTypeChecked],
   },
   {
