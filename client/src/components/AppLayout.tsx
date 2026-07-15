@@ -19,7 +19,7 @@ export function AppLayout(): React.JSX.Element {
       <header className="app-header">
         <div className="app-header__inner">
           <NavLink to="/" className="brand">
-            Stadium<span>IQ</span>
+            Stadium<span>Akinator</span>
           </NavLink>
           <nav className="primary-nav" aria-label="Primary">
             {NAV_ITEMS.map((item) => (

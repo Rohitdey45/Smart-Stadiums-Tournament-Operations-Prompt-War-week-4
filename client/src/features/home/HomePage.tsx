@@ -8,8 +8,8 @@ export function HomePage(): React.JSX.Element {
       <div>
         <h1 id="home-heading">Smart Stadiums &amp; Tournament Operations</h1>
         <p className="page-intro">
-          StadiumIQ is a GenAI platform for the FIFA World Cup 2026 at Estadio Azteca. Fans get
-          multilingual navigation, accessibility and transport help; organizers get live crowd
+          Stadium Akinator is a GenAI platform for the FIFA World Cup 2026 at Estadio Azteca. Fans
+          get multilingual navigation, accessibility and transport help; organizers get live crowd
           intelligence and AI-generated operational briefings.
         </p>
       </div>

@@ -20,7 +20,7 @@ describe('AssistantPage', () => {
 
     render(<AssistantPage />);
     await user.type(screen.getByLabelText('Your question'), 'Where is the accessible entrance?');
-    await user.click(screen.getByRole('button', { name: 'Ask StadiumIQ' }));
+    await user.click(screen.getByRole('button', { name: 'Ask Stadium Akinator' }));
 
     const conversation = await screen.findByRole('list', { name: 'Conversation' });
     expect(within(conversation).getByText('Use Gate 6 for step-free access.')).toBeInTheDocument();
@@ -51,7 +51,7 @@ describe('AssistantPage', () => {
 
     render(<AssistantPage />);
     await user.type(screen.getByLabelText('Your question'), 'hello');
-    await user.click(screen.getByRole('button', { name: 'Ask StadiumIQ' }));
+    await user.click(screen.getByRole('button', { name: 'Ask Stadium Akinator' }));
 
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent('temporarily unavailable');
@@ -68,7 +68,7 @@ describe('AssistantPage', () => {
     render(<AssistantPage />);
     await user.selectOptions(screen.getByLabelText('Answer language'), 'es');
     await user.type(screen.getByLabelText('Your question'), 'acceso accesible');
-    await user.click(screen.getByRole('button', { name: 'Ask StadiumIQ' }));
+    await user.click(screen.getByRole('button', { name: 'Ask Stadium Akinator' }));
 
     await waitFor(() => {
       expect(ask).toHaveBeenCalledWith('acceso accesible', 'es');

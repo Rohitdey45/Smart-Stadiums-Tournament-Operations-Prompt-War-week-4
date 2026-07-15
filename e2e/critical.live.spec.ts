@@ -15,7 +15,7 @@ test('home page and primary navigation render', async ({ page }) => {
 test('the assistant route loads its question form', async ({ page }) => {
   await page.goto('/assistant');
   await expect(page.getByLabel('Your question')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Ask StadiumIQ' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Ask Stadium Akinator' })).toBeVisible();
 });
 
 test('health and security.txt endpoints respond on the live host', async ({ request }) => {

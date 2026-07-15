@@ -63,7 +63,7 @@ test('a fan asks the assistant and reads a grounded answer', async ({ page }) =>
   await expect(page).toHaveURL(/\/assistant$/);
 
   await page.getByLabel('Your question').fill('Where is the accessible entrance?');
-  await page.getByRole('button', { name: 'Ask StadiumIQ' }).click();
+  await page.getByRole('button', { name: 'Ask Stadium Akinator' }).click();
 
   await expect(page.getByText('Use Gate 6 for step-free access.')).toBeVisible();
   await expectNoA11yViolations(page);
@@ -91,7 +91,7 @@ test('an Arabic answer renders right-to-left', async ({ page }) => {
   await page.goto('/assistant');
   await page.getByLabel('Answer language').selectOption('ar');
   await page.getByLabel('Your question').fill('أين المدخل المخصص لذوي الاحتياجات الخاصة؟');
-  await page.getByRole('button', { name: 'Ask StadiumIQ' }).click();
+  await page.getByRole('button', { name: 'Ask Stadium Akinator' }).click();
 
   const answer = page.getByText(arabicAnswer);
   await expect(answer).toBeVisible();

@@ -8,7 +8,7 @@ interface ChatMessageListProps {
 
 const ROLE_LABEL: Record<ChatTurn['role'], string> = {
   fan: 'You asked',
-  assistant: 'StadiumIQ',
+  assistant: 'Stadium Akinator',
 };
 
 /** Accessible, live-updating transcript of the fan conversation. */

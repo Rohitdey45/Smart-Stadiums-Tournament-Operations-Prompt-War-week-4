@@ -14,8 +14,11 @@ let app: express.Express;
 
 beforeAll(() => {
   const fixtureDist = mkdtempSync(path.join(tmpdir(), 'stadiumiq-dist-'));
-  writeFileSync(path.join(fixtureDist, 'index.html'), '<!doctype html><title>StadiumIQ</title>');
-  writeFileSync(path.join(fixtureDist, 'app-abc123.js'), 'console.log("bundle");');
+  writeFileSync(
+    path.join(fixtureDist, 'index.html'),
+    '<!doctype html><title>Stadium Akinator</title>',
+  );
+  writeFileSync(path.join(fixtureDist, 'app-abc123.js'), 'window.bundle = "loaded";');
 
   app = express();
   app.get('/api/health', (_req, res) => {

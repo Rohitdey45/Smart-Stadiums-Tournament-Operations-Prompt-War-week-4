@@ -1,15 +1,15 @@
-/* StadiumIQ design system. Colours are chosen for WCAG 2.1 AA contrast
+/* Stadium Akinator design system. Colours are chosen for WCAG 2.1 AA contrast
    (>= 4.5:1 for body text, >= 3:1 for large text and UI borders). */
 
 :root {
-  --color-bg: #0a0f1f;
-  --color-surface: #151d33;
-  --color-surface-raised: #1e2740;
-  --color-border: #33405e;
-  --color-text: #f4f7fc;
-  --color-text-muted: #c3cde0;
-  --color-accent: #4c8dff;
-  --color-accent-strong: #1e50c8;
+  --color-bg: #0c0617;
+  --color-surface: #160d2b;
+  --color-surface-raised: #22163d;
+  --color-border: #3a285c;
+  --color-text: #f5f3ff;
+  --color-text-muted: #cbd5e1;
+  --color-accent: #c084fc;
+  --color-accent-strong: #6d28d9;
   --color-on-accent: #ffffff;
   /* Status colours meet WCAG AA (>= 4.5:1) with their on-colour text. */
   --color-comfortable: #157a48;
