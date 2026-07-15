@@ -35,6 +35,9 @@
     ],
     "*.{js,json,md,yml,yaml,css}": "prettier --write"
   },
+  "dependencies": {
+    "typescript": "^5.8.3"
+  },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^9.30.0",
@@ -45,7 +48,6 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.0.8",
     "prettier": "^3.6.0",
-    "typescript": "^5.8.3",
     "typescript-eslint": "^8.35.0"
   },
   "overrides": {
